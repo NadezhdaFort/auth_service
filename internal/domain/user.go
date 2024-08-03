@@ -8,11 +8,13 @@ const (
 )
 
 type User struct {
-	ID       primitive.ObjectID `json:"id"`
-	Login    string             `json:"login"`
-	Password string             `json:"password"`
-	Name     string             `json:"name"`
-	Role     string             `json:"role"`
+	ID        primitive.ObjectID `json:"id"`
+	Login     string             `json:"login"`
+	Password  string             `json:"password"`
+	Name      string             `json:"name"`
+	Role      string             `json:"role"`
+	Email     string             `json:"email"`
+	IsBlocked bool               `json:"isBlocked"`
 }
 
 type UserInfo struct {
@@ -23,6 +25,15 @@ type UserInfo struct {
 type UserPassword struct {
 	ID       primitive.ObjectID `json:"id"`
 	Password string             `json:"password"`
+}
+
+type SetBlockUser struct {
+	ID primitive.ObjectID `json:"id"`
+}
+
+type UserRole struct {
+	ID   primitive.ObjectID `json:"id"`
+	Role string             `json:"role"`
 }
 
 type LoginPassword struct {

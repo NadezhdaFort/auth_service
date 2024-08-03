@@ -27,10 +27,11 @@ func SignUp(lp *domain.LoginPassword) (*domain.UserToken, error) {
 	}
 
 	newUser := domain.User{
-		ID:       primitive.NewObjectID(),
-		Login:    lp.Login,
-		Password: hash(lp.Password),
-		Role:     domain.UserRoleDefault,
+		ID:        primitive.NewObjectID(),
+		Login:     lp.Login,
+		Password:  hash(lp.Password),
+		Role:      domain.UserRoleDefault,
+		IsBlocked: false,
 	}
 
 	if err := users.SetUser(&newUser); err != nil {
@@ -99,6 +100,33 @@ func ChangePsw(up *domain.UserPassword) error {
 
 	user.Password = hash(up.Password)
 
+	return users.SetUser(user)
+}
+
+func BlockUser(ub *domain.SetBlockUser) error {
+	user, err := users.GetUser(ub.ID)
+	if err != nil {
+		return err
+	}
+	user.IsBlocked = true
+	return users.SetUser(user)
+}
+
+func UnblockUser(ub *domain.SetBlockUser) error {
+	user, err := users.GetUser(ub.ID)
+	if err != nil {
+		return err
+	}
+	user.IsBlocked = false
+	return users.SetUser(user)
+}
+
+func SetRoleUser(ur *domain.UserRole) error {
+	user, err := users.GetUser(ur.ID)
+	if err != nil {
+		return err
+	}
+	user.Role = ur.Role
 	return users.SetUser(user)
 }
 
